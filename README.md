@@ -9,8 +9,8 @@ apt install go
 sudo apt-get -y install postgresql
 
 # Clone & install packages
-git clone  https://github.com/GuwandykA/bd-backend.git 
-cd bd-backend
+git clone  https://github.com/GuwandykA/test-map.git 
+cd test-map
 cp config-example.yml config.yml
 
 # For Development

@@ -1,0 +1,9 @@
+.idea
+table.sql
+config.yml
+docker-compose.yml
+/logs
+/public
+/tmp
+/vendor
+**/.DS_Store

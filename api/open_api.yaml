@@ -1,0 +1,205 @@
+openapi: 3.0.1
+info:
+  title: HTTP Proxy API
+  version: 0.1.0
+  description: test project
+tags:
+  - name: "public"
+    description: "public utility methods"
+  - name: "workflow"
+paths:
+  '/api/timetables':
+    post:
+      tags:
+        - workflow
+      summary: Start add timetable
+      operationId: 'start-add-timetable'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        200:
+          description: 'ok'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        400:
+          description: 'request parameters did not pass validation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          description: 'server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  '/api/v1/start/get-profile':
+    post:
+      tags:
+        - workflow
+      summary: Get user profile
+      operationId: 'get-profile'
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'ok'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        400:
+          description: 'request parameters did not pass validation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+            description: 'server error'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+
+
+  '/api/v1/start/file':
+    post:
+      tags:
+        - workflow
+      summary: File upload
+      operationId: 'file-upload'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: 'ok'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        400:
+          description: 'request parameters did not pass validation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          description: 'server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: [value]
+      properties:
+        value:
+          type: array
+          items:
+            type: [ integer ]
+
+    DataLoginResponse:
+      type: object
+      required: [status]
+      properties:
+        token:
+            type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: response status
+          enum:
+            - true
+            - false
+        value:
+          type: array
+          items:
+            type: object
+            properties:
+              Number: integer
+
+
+    ErrorResponse:
+          type: object
+          properties:
+            status:
+              type: boolean
+              description: response status
+              enum:
+                - false
+            message:
+              type: string
+              description: content errors
+            code:
+              type: string
+
+
+    DataUserResponse:
+      type: object
+      required: [status]
+      properties:
+        uuid:
+          type: string
+        fullName:
+          type: string
+        phoneNumber:
+          type: string
+        avatar:
+          type: string
+        role:
+          type: string
+
+
+    GetUserResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: response status
+          enum:
+            - true
+        message:
+          type: string
+        code:
+          type: string
+        data:
+          $ref: '#/components/schemas/DataUserResponse'
+
+
+    FileResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: response status
+          enum:
+            - true
+        message:
+          type: string
+        code:
+          type: string
+        data:
+          type: string
+
